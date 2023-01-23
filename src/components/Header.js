@@ -12,6 +12,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { CartState } from "../context/Context";
 import "./styles.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Header = () => {
   const {
@@ -19,6 +20,10 @@ const Header = () => {
     dispatch,
     productDispatch,
   } = CartState();
+
+  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+
+
 
   return (
     <Navbar bg="dark" variant="dark" style={{ height: 80 }}>
@@ -44,7 +49,7 @@ const Header = () => {
           </Navbar.Text>
         )}
         <Nav>
-          <Dropdown alignRight>
+          <Dropdown >
             <Dropdown.Toggle  variant="success">
               <FaShoppingCart color="white" fontSize="25px" />
               <Badge>{cart.length}</Badge>
@@ -88,6 +93,11 @@ const Header = () => {
             </Dropdown.Menu>
           </Dropdown>
         </Nav>
+        {isAuthenticated ? (<Button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+      Log Out
+    </Button>) : (<Button onClick={() => loginWithRedirect()}>Log In</Button>)}
+      
+
       </Container>
     </Navbar>
   );

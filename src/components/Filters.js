@@ -2,6 +2,7 @@
 import { Button, Form } from "react-bootstrap";
 import Rating from "./Rating";
 import { CartState } from "../context/Context";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Filters = () => {
   //  const[rate, setRate] = useState(2);
@@ -9,8 +10,11 @@ const Filters = () => {
   const {productState: {byStock, byFastDelivery, sort, byRating}, productDispatch} = CartState()
   // console.log(productState)
 
+  const {user, isAuthenticated} = useAuth0();
+
   return (
     <div className="filters">
+      {isAuthenticated && <h6>Welcome {user.name}</h6>}
       <span className="title">Filter Products</span>
       <span>
         <Form.Check
